@@ -1,5 +1,9 @@
 # User Behavior Analysis
 
+## Overview
+big data: efficency, index
+
+
 ### Data Source User Behavior Data from Taobao
 https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1
 
@@ -18,21 +22,27 @@ define why: connect business with data<br>
 gathering reuiqrements: from product(product centerted) or operation(user centerted) deparment<br> 
 Product, User, Platform <br> 
 
-## Data Collection 
+## 2 Data Collection 
 Data Integration ETL extract, transform and load<br>
 Kettle is a leading open source ETL application<br>
 
-## Data Cleaninging 
+## 2 Data Cleaninging 
+name: type, constrain 
+value: null, repeated, anomoly 
 
-## Data Analysis and Visualization 
+## 2 Data Analysis 
+User(focus), Goods, Platform: how to act: functions improvement, recomendation system 
+
+## 2 Data Visualization 
 Tableau 
 
-## Interpretation 
+## 2 Interpretation 
 
-## Modeling 
+
+## 3 Modeling 
 
 Recomendation System 
 
-## Model Interpretation: Explianable AI 
+## 3 Interpretation: Explianable AI 
 
 Shap value 
