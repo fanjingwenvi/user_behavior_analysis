@@ -17,7 +17,7 @@ category_id 9,439<br>
 behavior_type 4 types: pv - pageview/click, fav - favorite, cart - category, buy - buy<br>
 timestamp: yyyy-mm-dd<br>
 
-## Business Analysis
+## 1 Business Analysis
 define why: connect business with data<br> 
 gathering reuiqrements: from product(product centerted) or operation(user centerted) deparment<br> 
 Product, User, Platform <br> 
