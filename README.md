@@ -19,7 +19,8 @@ gathering reuiqrements: from product(product centerted) or operation(user center
 Product, User, Platform <br> 
 
 ## Data Collection 
-## Data Integration ETL 
+Data Integration ETL extract, transform and load<br>
+Kettle is a leading open source ETL application<br>
 
 ## Data Cleaninging 
 
