@@ -1,8 +1,9 @@
 # User Behavior Analysis
 
 ## Overview
-big data: efficency, index
 
+big data: efficency, index
+https://www.kaggle.com/fanjingwen/user-behavior-analysis-pandas/edit<br>
 
 ### Data Source User Behavior Data from Taobao
 https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1
@@ -38,11 +39,16 @@ Tableau
 
 ## 2 Interpretation 
 
+(
 
-## 3 Modeling 
+# Further Development 
+
+## Modeling 
 
 Recomendation System 
 
 ## 3 Interpretation: Explianable AI 
 
 Shap value to explain the model 
+
+)
