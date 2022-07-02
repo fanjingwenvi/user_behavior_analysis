@@ -1,32 +1,42 @@
 USE taobao;
 DESC temp_behavior;
 
-## config 
-show VARIABLES like '%_buffer%';
-set GLOBAL innodb_buffer_pool_size=1,070,000,000;
+## big data
+## config: buffer and connetion time 
+## batch: operation 
+SHOW VARIABLES like '%_buffer%';
+SET GLOBAL innodb_buffer_pool_size=1070000000;
+## Edit → Preferences → SQL Editor 
+## 	→ DBMS connection read time out (in seconds): 600 Changed the value to 6000.
+SELECT * FROM temp_behavior WHERE user_id IS NULL;
+SELECT * FROM temp_behavior WHERE item_id IS NULL;
+SELECT * FROM temp_behavior WHERE category_id IS NULL;
+SELECT * FROM temp_behavior WHERE behavior_type IS NULL;
+SELECT * FROM temp_behavior WHERE timestamp IS NULL;
 
-For me it was under Edit → Preferences → SQL Editor 
-→ DBMS connection read time out (in seconds): 600
-Changed the value to 6000.
-
-## check the null value, repeated value, anomaly( think about the operation time when it is big data )
-SELECT * 
+## null, repeated value, anomaly
 FROM temp_behavior 
 WHERE 
 	user_id IS NULL OR user_id IS NULL 
 	OR ategory_id IS NULL OR behavior_type IS NULL 
 	OR timestamp IS NULL 
 
-
 ## check field/column name, data type 
-## timestamp 4 byte convert to UTC for storage 
-## datetime 8 byte, big range 
+
+## TIMSTAMP CUT: 4byte, smaller time range, default current time, 
+## 	convert to UTC for storage CUT Coordinated Universal Time
+## DATESTIME: 8byte, bigger time range,defalut null 
+## time:  year, date, time, datestime, timstamp 
+
+## Int: always 4 bytes,int(11) = 4 bytes = 32 bit.
+## VARCHAR(5) vs CHAR(5): varchar is more flexible for the space
+
+## Big Query DATETIME  - 8 bytes TIMESTAMP - 8 bytes with [time zone]
+## Uppercase: Cmd + K, Cmd + U
 
 SELECT * FROM test; 
-
-## ALTER TABLE table_name  old_column_name new_col_name Data Type;
+## ALTER TABLE table_name (CHANGE) old_column_name new_col_name Data Type;
 ALTER TABLE temp_behavior CHANGE timestamp tt int;
-
 ALTER TABLE temp_behavior ADD dt datetime;
 
 ## WHERE column = 'dt'
@@ -43,10 +53,7 @@ UPDATE temp_behavior SET h = hour(dt);
 
 
 ## Further 
-
-Example: 
+## How int is transformed into datetime  
 SELECT [activity_dt], count(*)
 FROM table1
-GROUP BY hour( activity_dt ) , day( activity_dt )
-
-## Hpw int is transformed into datetime 
+GROUP BY hour( activity_dt ), day( activity_dt )

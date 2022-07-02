@@ -22,3 +22,22 @@ select item_id, count(*) as item_sale
 from temp_behavior
 where behavior_type = "buy"
 group by item_id;
+
+
+## 
+CREATE TABLE t1 (col1 INT) SELECT col2 FROM t2;
+
+CREATE TABLE test_output
+SELECT user_id
+FROM test;
+
+
+
+
+
+
+
+
+
+
+
