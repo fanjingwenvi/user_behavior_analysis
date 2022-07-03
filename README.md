@@ -16,7 +16,7 @@ https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1<br>
 table: user_behavior<br>
 columns: user_id, item_id, category_id int, behavior_type varchar, timestamp<br>
 Info:
-index 100,150,807
+index 100,150,807<br>
 user_id INT 987,994 <br>
 item_id INT 4,162,024<br>
 category_id INT 9,439<br>
