@@ -1,143 +1,177 @@
-user_id  item_id category_id behavior_type tt
-dt, d, h 
-behavior_type "pv", "fav" ,"cart", "buy" 
+## Data understanding 
+## user_id item_id category_id behavior_type tt dt d h 
+## behavior_type "pv", "fav" ,"cart", "buy" 
 
-## https://www.piliapp.com/mysql-syntax-check/
+## 0_overview 
+SELECT * 
+FROM user_behavior
+LIMIT 5; 
 
-## 1. overview 
-create table overview 
-select count(*) as "index", ## must be quoted here, why 
-	count(distinct(user_id)) as user_id,
-	count(distinct(item_id)) as item_id,
-	count(distinct(category_id)) as category_id,
-	count(distinct(behavior_type )) as behavior_type,
-	count(distinct(tt)) as tt
-from temp_behavior;
+CREATE TABLE 01_overview 
+SELECT COUNT(*) AS "index", ## must be quoted here, no GROUP
+	COUNT(distinct(user_id)) AS user_count,
+	COUNT(distinct(item_id)) AS item_count,
+	COUNT(distinct(category_id)) AS category_count,
+	COUNT(distinct(behavior_type )) AS behavior_count,
+	COUNT(distinct(tt)) AS tt_count 
+FROM user_behavior;
 
-## 2. behavior_type_count (average conversion rate)
-create table behavior_type_count
-select(
-select count(*) 
-from temp_behavior
-where behavior_type = "pv"
-) as "pv_count",
-(
-select count(*) 
-from temp_behavior
-where behavior_type = "fav"
-) as "fav_count",
-(
-select count(*) 
-from temp_behavior
-where behavior_type = "cart"
-) as "cart_count",
-(
-select count(*) 
-from temp_behavior
-where behavior_type = "buy"
-) as "buy";
+## 1.1 traffic_conversion 
+CREATE TABLE 12_traffic_conversion 
+SELECT COUNT(*) AS behavior_count,
+	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
+	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
+	SUM(CASE WHEN behavior_type ='cart' THEN 1 ELSE 0 END) AS cart_count,
+	SUM(CASE WHEN behavior_type ='buy' THEN 1 ELSE 0 END) AS buy_count
+FROM user_behavior
+## traffic conversion rate is low, but this should be compared to the big platform app.
 
-## 3. user_behavior_date_hour (behavior, buy / behavior, fluctuation, max, min)
-create table user_active_conversion_date_hour
-select d,
-h, 
-count(*) as behavior_count,
-count(if(behavior_type='buy',behavior_type,null)) as buy_count
-## round( buy_count / behavior_count , 2 ) as buy_div_behavior ## this does not work 
-from temp_behavior
-group by d, h
-order by d, h;
+## 1.2_user_conversion 
+CREATE TABLE 11_user_behavior_count 
+SELECT user_id,
+	COUNT(behavior_type) AS behavior_count,
+	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
+	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
+	SUM(CASE WHEN behavior_type ='cart' THEN 1 ELSE 0 END) AS cart_count,
+	SUM(CASE WHEN behavior_type ='buy' THEN 1 ELSE 0 END) AS buy_count
+FROM user_behavior
+GROUP BY user_id
 
-## 4. user_behavior_date (focus on buy)
-create table user_behavior_date
-select d,
-count(if(behavior_type='pv',behavior_type,null)) as pv_count,
-count(if(behavior_type='cart',behavior_type,null)) as cart_count,
-count(if(behavior_type='fav',behavior_type,null)) as fav_count,
-count(if(behavior_type='buy',behavior_type,null)) as buy_count
-from temp_behavior
-group by d
-order by d;
+CREATE TABLE 11_user_conversion 
+SELECT COUNT(*) AS user_count,
+	SUM(CASE WHEN pv_count > 0 THEN 1 ELSE 0 END) AS pv_user,
+	SUM(CASE WHEN fav_count > 0 THEN 1 ELSE 0 END) AS fav_user, 
+	SUM(CASE WHEN cart_count > 0 THEN 1 ELSE 0 END) AS cart_user, 
+	SUM(CASE WHEN buy_count > 0 THEN 1 ELSE 0 END) AS buy_user 
+FROM 11_user_behavior_count;
+## The fav rate is lower than the cart rate. User can not buy form the favirate list directly.
 
-## 5. user_behavior_hour (focus on buy)
-create table ser_behavior_hour
-select h, 
-count(if(behavior_type='pv',behavior_type,null)) as pv_count,
-count(if(behavior_type='cart',behavior_type,null)) as cart_count,
-count(if(behavior_type='fav',behavior_type,null)) as fav_count,
-count(if(behavior_type='buy',behavior_type,null)) as buy_count
-from temp_behavior
-group by h
-order by h;
-
-## 6. user_behavior_path
-## (same user and same item, what is the next step, ordered by time )
+## 1.3_conversion_path
+## what is the step lead to buy: pv and cart lead to buy 
+SELECT user_id, 
+item_id, behavior_type
+FROM user_behavior
+GROUP BY user_id, item_id
+ORDER BY dt 
 
 
-## recency, frequency, monetary value
-## 7. RFM Model(time and by, identity the user)
-create view recency_frequency as 
-select user_id, 
-max(d) as recency,
-count(user_id) as frequency
-from temp_behavior
-where behavior_type='buy'
-group by user_id;
 
-## categorization
-## 1 3 9 
-## 1 3 9 
-## 
-## not applied to all users 
+## user portrait: habit
+## 2.1_user_in_days 
+CREATE TABLE 21_user_in_days  
+SELECT d, 
+	COUNT(distinct(user_id)) AS user_count,
+	COUNT(behavior_type) AS behavior_count,
+	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
+	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
+	SUM(CASE WHEN behavior_type ='cart' THEN 1 ELSE 0 END) AS cart_count,
+	SUM(CASE WHEN behavior_type ='buy' THEN 1 ELSE 0 END) AS buy_count
+FROM user_behavior
+GROUP BY d
+ORDER BY d;
+## big jump, because of the vistors, commercial evnet 
+## mark from Saturday 
 
-create view user_buy_count as
-select user_id, 
-count(user_id) as buy_count 
-from temp_behavior
-where behavior_type = "buy"
-group by user_id; 
+## 2.2_user_in_hours 
+CREATE TABLE 22_user_in_hours 
+SELECT h, 
+	COUNT(distinct(user_id)) AS user_count,
+	COUNT(behavior_type) AS behavior_count,
+	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
+	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
+	SUM(CASE WHEN behavior_type ='cart' THEN 1 ELSE 0 END) AS cart_count,
+	SUM(CASE WHEN behavior_type ='buy' THEN 1 ELSE 0 END) AS buy_count
+FROM user_behavior
+GROUP BY h
+ORDER BY h;
+## advise more customer service on the active hours 
 
-create table user_count_item_sum
-select buy_count, count(buy_count) as user_sum 
-from user_buy_count
-group by buy_count
-order by buy_count;
+
+## RFM: monetary: important or normal 
+## RF: valuable, keep, develop, retain 
+## low: medium, high: ## different strategy for different users 
+
+## 31_recency_frequency ## long table 
+CREATE VIEW 31_recency_frequency AS 
+SELECT user_id, 
+DATEDIFF('2017-12-03', max(d)) AS recency,
+COUNT(user_id) AS frequency
+FROM user_behavior
+WHERE behavior_type='buy'
+GROUP BY user_id
+ORDER BY recency; 
+
+## 32_RF_rating: ## long table 
+## R low 0~1 2~3 3+
+## F low 0~1 2~3 3+ 
+CREATE VIEW 32_RF_rating AS 
+SELECT user_id,
+(CASE WHEN recency > 3 THEN 1
+WHEN recency BETWEEN 2 and 3 THEN 2
+WHEN recency BETWEEN 0 and 1 THEN 3
+ELSE 0 END) AS R_rating,
+(CASE WHEN frequency BETWEEN 0 and 1 THEN 1
+WHEN frequency BETWEEN 2 and 3 THEN 2
+WHEN frequency >3 THEN 3 
+ELSE 0 END ) AS F_rating 
+FROM 31_recency_frequency
+ORDER BY R_rating, F_rating;
+
+## 33_RFM_caculation 
+CREATE TABLE 33_RFM_caculation 
+SELECT R_rating, F_rating, COUNT(*) AS RF_count
+FROM 32_RF_rating
+GROUP BY R_rating, F_rating
+ORDER BY R_rating, F_rating;
+
+## 34 recency_distribtion 
+## 34 frequency_distribution: imply sales  
+CREATE TABLE frequency_distribution 
+SELECT frequency, 
+	COUNT(buy_count) AS user_count
+FROM recency_frequency
+GROUP by frequency
+ORDER by frequency;
+
+
 
 ## 80/20 model 
-## 8. sales distribution (not popular item)
-create view item_buy_count as
-## with item_buy_count as( )## with is harder to debug 
-select item_id, 
-count(item_id) as buy_count 
-from temp_behavior
-where behavior_type = "buy"
-group by item_id; 
+## 4.1 items 
+CREATE TABLE 41_item_sale AS
+SELECT item_id, 
+	COUNT(item_id) AS buy_count 
+FROM user_behavior
+WHERE behavior_type = "buy"
+GROUP BY item_id
+ORDER BY buy_count; 
+## mostly just one times，can be user to find top items 
 
-create table buy_count_item_sum
-select buy_count, count(buy_count) as item_sum 
-from item_buy_count
-group by buy_count
-order by buy_count;
+CREATE TABLE 41_item_sales_distribution 
+SELECT buy_count, 
+	COUNT(buy_count) AS item_count
+FROM 41_item_sale
+GROUP by buy_count
+ORDER by buy_count;
 
-## 9. category distribution(not popular item)
-create view cat_buy_count as 
-select category_id, 
-count(category_id) as buy_count 
-from temp_behavior
-where behavior_type = "buy"
-group by category_id;
+## 4.2 category(not popular item)
+CREATE TABLE 42_cat_sale 
+SELECT category_id, 
+	COUNT(category_id) AS buy_count 
+FROM user_behavior
+WHERE behavior_type = "buy"
+GROUP by category_id
+ORDER BY buy_count; 
 
-create table cat_count_item_sum
-select buy_count, count(buy_count) as cat_sum 
-from cat_buy_count
-group by buy_count
-order by buy_count;
+CREATE TABLE 42_cat_sales_distribution 
+SELECT buy_count, 
+	COUNT(buy_count) AS cat_count
+FROM 42_cat_sale
+GROUP by buy_count
+ORDER by buy_count;
 
-## item_sales - item sales distribution 
+ 
 
-## creat table form select 
-## CREATE TABLE t1 (col1 INT) 
-## SELECT col2 FROM t2;
+
 
 
 

@@ -1,64 +1,59 @@
+## Data understanding 
+## user_id int, item_id int, category_id int,  behavior_type object, timestamp int 
+## tt dt d h 
+## behavior_type "pv", "fav" ,"cart", "buy" 
+
 USE taobao;
-DESC temp_behavior;
-## big data
-## config: buffer and connetion time 
-## batch: operation 
+DESC user_behavior;
+
+SELECT * 
+FROM user_behavior
+LIMIT 5; 
+
+## config for big data: connetion time and buffer
+## Edit → Preferences → SQL Editor → DBMS connection read time out (in seconds): 600 Changed the value to 6000.
 SHOW VARIABLES like '%_buffer%';
 SET GLOBAL innodb_buffer_pool_size=1070000000;
-## Edit → Preferences → SQL Editor → DBMS connection read time out (in seconds): 600 Changed the value to 6000.
 
 
 
-## 1. null, repeated value, anomaly
+## 1. check field/column name, data type 
+
+ALTER TABLE user_behavior CHANGE timestamp tt int;
+ALTER TABLE user_behavior ADD dt datetime, d date, t time, h int;
+## ALTER TABLE table_name (CHANGE) old_column_name new_col_name Data Type;
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE user_behavior SET dt=FROM_UNIXTIME(tt);
+SET SQL_SAFE_UPDATES = 1;
+UPDATE user_behavior SET d = date(dt); 
+UPDATE user_behavior SET t = time(dt); 
+UPDATE user_behavior SET h = hour(dt);
+## WHERE column = 'dt'
+
+## 2. null, repeated value, anomaly
+
 SELECT *
-FROM temp_behavior 
+FROM user_behavior 
 WHERE user_id IS NULL 
 	OR user_id IS NULL 
 	OR category_id IS NULL 
 	OR behavior_type IS NULL 
-	OR timestamp IS NULL;
-## bactch operation 
-SELECT * FROM temp_behavior WHERE user_id IS NULL;
-SELECT * FROM temp_behavior WHERE item_id IS NULL;
-SELECT * FROM temp_behavior WHERE category_id IS NULL;
-SELECT * FROM temp_behavior WHERE behavior_type IS NULL;
-SELECT * FROM temp_behavior WHERE timestamp IS NULL;
+	OR tt IS NULL;
 
-## repeated behavior at the reality 
+## repeated value: different device in the reality 
+SELECT tt    ## * does not work here 
+FROM user_behavior
+GROUP BY user_id, item_id, category_id, behavior_type, tt
+HAVING COUNT(*) > 1;
+## add id column 
 
-select max(dt), min(dt) from temp_behavior;
-delete from temp_behavior
-where dt < '2017-11-25 00:00:00'
-or dt > '2017-12-03 23:59:59';
+## anomaly: time range
+## DELETE FROM user_behavior
+SELECT * FROM user_behavior
+WHERE dt < '2017-11-25 00:00:00'
+OR dt > '2017-12-03 23:59:59';
 
-
-## 2. check field/column name, data type 
-
-## TIMSTAMP CUT: 4byte, smaller time range, default current time, convert to UTC for storage CUT Coordinated Universal Time
-## DATESTIME: 8byte, bigger time range,defalut null 
-## time:  year, date, time, datestime, timstamp 
-
-## Int: always 4 bytes,int(11) = 4 bytes = 32 bit.
-## VARCHAR(5) vs CHAR(5): varchar is more flexible for the space
-
-## Big Query DATETIME  - 8 bytes TIMESTAMP - 8 bytes with [time zone]
-## Uppercase: Cmd + K, Cmd + U
-
-## ALTER TABLE table_name (CHANGE) old_column_name new_col_name Data Type;
-ALTER TABLE temp_behavior CHANGE timestamp tt int;
-ALTER TABLE temp_behavior ADD dt datetime, d date, t time, h int;
-
-## WHERE column = 'dt'
-SET SQL_SAFE_UPDATES = 0;
-UPDATE temp_behavior SET dt=FROM_UNIXTIME(tt);
-SET SQL_SAFE_UPDATES = 1;
-UPDATE temp_behavior SET d = date(dt);
-UPDATE temp_behavior SET t = time(dt);
-UPDATE temp_behavior SET h = hour(dt);
-
-
-## 3. further 
-## How int is transformed into datetime  
-SELECT [activity_dt], count(*)
-FROM table1
-GROUP BY hour( activity_dt ), day( activity_dt )
+## further 
+## How int is transformed into datetime 
+## GROUP BY day(dt) instead of create new columns  

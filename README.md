@@ -1,59 +1,49 @@
 # User Behavior Analysis
 
-## 0.Overview
+## Overview
 
-My Kaggale Notebook 
-https://www.kaggle.com/code/fanjingwen/user-behavior-analysis/edit/run/99646720<br>
-
-### Business Backgroud 
+Business Backgroud <br>
 Taobao is a Chinese online shopping platform. It is headquartered in Hangzhou and is owned by Alibaba. According to Alexa rank, it is the eighth most-visited website globally in 2021.(source:wikipedia)<br>
-
-### Data Source 
-User Behavior Data from Taobao<br>
+<br>
+Dataset: User_Behavior <br>
+The dataset of this project contains all the behaviors of about 1 million random users with behaviors (behaviors including pageview, favorite, cart, buy ) between  2017-11-25 to 2017-12-3 on the Taobao platform. Each row of the dataset represents a user behavior, which consists of user_id, item_id, category_id, behavior_type, timestamp.  
 https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1<br>
-
-### Data Overview 
-table: user_behavior<br>
-columns: user_id, item_id, category_id int, behavior_type varchar, timestamp<br>
-Info:
-index 100,150,807<br>
-user_id INT 987,994 <br>
-item_id INT 4,162,024<br>
-category_id INT 9,439<br>
-behavior_type CHAR 4 types: pv - pageview/click, fav - favorite, cart - category, buy - buy<br>
-timestamp INT yyyy-mm-dd hh:mm:ss  2017-11-25 to 2017-12-3<br>
+<br>
+Dataset Size 
+index: 100,150,807<br>
+user_id: 987,994 <br>
+item_id: 4,162,024<br>
+category_id: 9,439<br>
 
 ## 1.Business Analysis
-define why: connect business with data<br> or gathering reuiqrements: from operation deparment(user centerted) or product deparment(product centerted)<br> 
-<br>
-Perspectives: User, Product(Vendor User), Platform(product) <br> 
-Comments: Users include consumers and verdors. Sales and growing the network are both important <br>
-<br>
-Create KPIs: compare to the base line<br>
-How active is the use? - behavior / behavior distict user id<br>
-What is the avarage conversion rate? - behavior types ratio<br> 
-How user bahve in diffrent time series? - day and hour, buy<br> 
-Distribution of the sales - 80% sales and 20% products<br>
+
+Goal for the platform app: 1. Incresing profit/sales 2.Improving the amount of buyer and seller <br>
+How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product stragy making.<br> 
+(real scenario: gathering reuiqrements: from operation deparment - user centerted, or product deparment - product centerted) <br>
+
+![mindnode](img/Analysis_Mindmap.jpg)
+
+User Conversion: improve conversion rate <br>
+User Habit: target active users <br>
+User Value: different strategies for different users <br>
+User Preference: include the seller users <br>
 
 ## 2.Data Collection 
-CSV - Table - DataFrame / Spark DataFrame<br>
-Big Data: Spark, Pyspark<br>
-Data Integration: ETL extract, transform and load. Kettle is a leading open source ETL application <br>
+There are different approaches. 
+Data Form: CSV File - SQL Database - pandas DataFram - Spark DataFrame<br>
+Related Field: Data Integration: ETL extract, transform and load.Big Data: batach processing, configuration.<br>
 
 ## 3. Data Cleaninging 
 field/column: datatype, constrain<br> 
 value: null, repeated, anomoly<br> 
-(time datatype and time series)<br> 
 
 ## 4. Data Analysis 
-User, Product(Vender user), Platform<br> 
+See SQL Folder  
 
 ## 5. Data Visualization and Interpretation 
-Tableau<br> 
-how to add business value to the system<br>
-user contric and produc centric<br> 
-improvement: waht if the coversion rate is low? Maybe a recomendation system in the furture? <br>
+See Tableau<br> 
 
 ## 6.Further Development 
-Modeling: Recomendation System 
-Visualizationa and Interpretation: Shap value for explainable AI 
+Replacing sql with pandas or pyspark https://www.kaggle.com/code/fanjingwen/user-behavior-analysis/edit/run/99646720<br>
+ML Modeling: Recomendation System <br>
+ML Visualizationa and Interpretation: shap value for explainable AI <br>
