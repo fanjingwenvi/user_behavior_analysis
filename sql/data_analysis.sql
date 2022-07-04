@@ -35,7 +35,8 @@ SELECT user_id,
 	SUM(CASE WHEN behavior_type ='cart' THEN 1 ELSE 0 END) AS cart_count,
 	SUM(CASE WHEN behavior_type ='buy' THEN 1 ELSE 0 END) AS buy_count
 FROM user_behavior
-GROUP BY user_id
+GROUP BY user_id;
+## long table, but view is connceted to the original table  
 
 CREATE TABLE 11_user_conversion 
 SELECT COUNT(*) AS user_count,
@@ -91,8 +92,8 @@ ORDER BY h;
 ## RF: valuable, keep, develop, retain 
 ## low: medium, high: ## different strategy for different users 
 
-## 31_recency_frequency ## long table 
-CREATE VIEW 31_recency_frequency AS 
+## 31_recency_frequency ## long table, connect to others 
+CREATE TABLE 31_RF 
 SELECT user_id, 
 DATEDIFF('2017-12-03', max(d)) AS recency,
 COUNT(user_id) AS frequency
@@ -104,7 +105,7 @@ ORDER BY recency;
 ## 32_RF_rating: ## long table 
 ## R low 0~1 2~3 3+
 ## F low 0~1 2~3 3+ 
-CREATE VIEW 32_RF_rating AS 
+CREATE TABLE 31_RF_rating  
 SELECT user_id,
 (CASE WHEN recency > 3 THEN 1
 WHEN recency BETWEEN 2 and 3 THEN 2
@@ -118,7 +119,7 @@ FROM 31_recency_frequency
 ORDER BY R_rating, F_rating;
 
 ## 33_RFM_caculation 
-CREATE TABLE 33_RFM_caculation 
+CREATE TABLE 31_RFM_caculation 
 SELECT R_rating, F_rating, COUNT(*) AS RF_count
 FROM 32_RF_rating
 GROUP BY R_rating, F_rating

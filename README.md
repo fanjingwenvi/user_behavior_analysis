@@ -44,6 +44,6 @@ See SQL Folder
 See Tableau<br> 
 
 ## 6.Further Development 
-Replacing sql with pandas or pyspark https://www.kaggle.com/code/fanjingwen/user-behavior-analysis/edit/run/99646720<br>
+Replacing sql with pandas or pyspark <br>
 ML Modeling: Recomendation System <br>
 ML Visualizationa and Interpretation: shap value for explainable AI <br>
