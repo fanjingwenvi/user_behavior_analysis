@@ -38,7 +38,8 @@ field/column: datatype, constrain<br>
 value: null, repeated, anomoly<br> 
 
 ## 4. Data Analysis 
-See SQL Folder  
+See Mysql with git SQL Folder  
+See Pyspark with kaggle file or link https://www.kaggle.com/code/fanjingwen/user-behavior-anlyasis
 
 ## 5. Data Visualization and Interpretation 
 See Tableau<br> 
