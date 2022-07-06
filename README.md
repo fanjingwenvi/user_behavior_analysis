@@ -9,7 +9,7 @@ Dataset: User_Behavior <br>
 The dataset of this project contains all the behaviors of about 1 million random users with behaviors (behaviors including pageview, favorite, cart, buy ) between  2017-11-25 to 2017-12-3 on the Taobao platform. Each row of the dataset represents a user behavior, which consists of user_id, item_id, category_id, behavior_type, timestamp.  
 https://tianchi.aliyun.com/dataset/dataDetail?dataId=649&userId=1<br>
 <br>
-Dataset Size 
+Dataset Size<br>
 index: 100,150,807<br>
 user_id: 987,994 <br>
 item_id: 4,162,024<br>
@@ -17,7 +17,7 @@ category_id: 9,439<br>
 
 ## 1.Business Analysis
 
-Goal for the platform app: 1. Incresing profit/sales 2.Improving the amount of buyer and seller <br>
+Goal for the platform app: 1. Incresing profit/sales. 2.Improving the amount of buyer and seller <br>
 How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product stragy making.<br> 
 (real scenario: gathering reuiqrements: from operation deparment - user centerted, or product deparment - product centerted) <br>
 
@@ -34,17 +34,17 @@ Data Form: CSV File - SQL Database - pandas DataFram - Spark DataFrame<br>
 Related Field: Data Integration: ETL extract, transform and load.Big Data: batach processing, configuration.<br>
 
 ## 3. Data Cleaninging 
-field/column: datatype, constrain<br> 
-value: null, repeated, anomoly<br> 
+field/column: column name, datatype<br> 
+value: null, repeated, anomoly(constrain)<br> 
 
 ## 4. Data Analysis 
-See Mysql with git SQL Folder  
-See Pyspark with kaggle file or link https://www.kaggle.com/code/fanjingwen/user-behavior-anlyasis
+Mysql Solution: with git sql folder  
+Ongoing Pyspark Solution: with pyspark.ipynb file 
 
 ## 5. Data Visualization and Interpretation 
 See Tableau<br> 
 
 ## 6.Further Development 
-Replacing sql with pandas or pyspark <br>
+Big Data Solution: Spark<br>
 ML Modeling: Recomendation System <br>
 ML Visualizationa and Interpretation: shap value for explainable AI <br>

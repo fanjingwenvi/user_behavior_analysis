@@ -7,17 +7,18 @@ SELECT *
 FROM user_behavior
 LIMIT 5; 
 
+## 0.1 overview 
 CREATE TABLE 01_overview 
-SELECT COUNT(*) AS "index", ## must be quoted here, no GROUP
-	COUNT(distinct(user_id)) AS user_count,
-	COUNT(distinct(item_id)) AS item_count,
-	COUNT(distinct(category_id)) AS category_count,
-	COUNT(distinct(behavior_type )) AS behavior_count,
-	COUNT(distinct(tt)) AS tt_count 
+SELECT COUNT(*) AS index, ## must be quoted here, no GROUP
+	COUNT(DISTINCT (user_id)) AS user_count,
+	COUNT(DISTINCT (item_id)) AS item_count,
+	COUNT(DISTINCT (category_id)) AS category_count,
+	COUNT(DISTINCT (behavior_type )) AS behavior_count,
+	COUNT(DISTINCT (tt)) AS tt_count 
 FROM user_behavior;
 
 ## 1.1 traffic_conversion 
-CREATE TABLE 12_traffic_conversion 
+CREATE TABLE 11_traffic_conversion 
 SELECT COUNT(*) AS behavior_count,
 	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
 	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
@@ -27,7 +28,7 @@ FROM user_behavior
 ## traffic conversion rate is low, but this should be compared to the big platform app.
 
 ## 1.2_user_conversion 
-CREATE TABLE 11_user_behavior_count 
+CREATE TABLE 12_user_behavior_count 
 SELECT user_id,
 	COUNT(behavior_type) AS behavior_count,
 	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
@@ -38,7 +39,7 @@ FROM user_behavior
 GROUP BY user_id;
 ## long table, but view is connceted to the original table  
 
-CREATE TABLE 11_user_conversion 
+CREATE TABLE 12_user_conversion 
 SELECT COUNT(*) AS user_count,
 	SUM(CASE WHEN pv_count > 0 THEN 1 ELSE 0 END) AS pv_user,
 	SUM(CASE WHEN fav_count > 0 THEN 1 ELSE 0 END) AS fav_user, 
@@ -61,7 +62,7 @@ ORDER BY dt
 ## 2.1_user_in_days 
 CREATE TABLE 21_user_in_days  
 SELECT d, 
-	COUNT(distinct(user_id)) AS user_count,
+	COUNT(DISTINCT (user_id)) AS user_count,
 	COUNT(behavior_type) AS behavior_count,
 	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
 	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
@@ -76,7 +77,7 @@ ORDER BY d;
 ## 2.2_user_in_hours 
 CREATE TABLE 22_user_in_hours 
 SELECT h, 
-	COUNT(distinct(user_id)) AS user_count,
+	COUNT(DISTINCT (user_id)) AS user_count,
 	COUNT(behavior_type) AS behavior_count,
 	SUM(CASE WHEN behavior_type ='pv' THEN 1 ELSE 0 END) AS pv_count,
 	SUM(CASE WHEN behavior_type ='fav' THEN 1 ELSE 0 END) AS fav_count,
@@ -95,7 +96,7 @@ ORDER BY h;
 ## 31_recency_frequency ## long table, connect to others 
 CREATE TABLE 31_RF 
 SELECT user_id, 
-DATEDIFF('2017-12-03', max(d)) AS recency,
+	DATEDIFF('2017-12-03', max(d)) AS recency,
 COUNT(user_id) AS frequency
 FROM user_behavior
 WHERE behavior_type='buy'
@@ -115,13 +116,13 @@ ELSE 0 END) AS R_rating,
 WHEN frequency BETWEEN 2 and 3 THEN 2
 WHEN frequency >3 THEN 3 
 ELSE 0 END ) AS F_rating 
-FROM 31_recency_frequency
+FROM 31_RF
 ORDER BY R_rating, F_rating;
 
 ## 33_RFM_caculation 
-CREATE TABLE 31_RFM_caculation 
+CREATE TABLE 31_RF_caculation 
 SELECT R_rating, F_rating, COUNT(*) AS RF_count
-FROM 32_RF_rating
+FROM 31_RF_rating
 GROUP BY R_rating, F_rating
 ORDER BY R_rating, F_rating;
 
