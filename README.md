@@ -38,13 +38,13 @@ field/column: column name, datatype<br>
 value: null, repeated, anomoly(constrain)<br> 
 
 ## 4. Data Analysis 
-Mysql Solution: with git sql folder  
-Ongoing Pyspark Solution: with pyspark.ipynb file 
+Mysql Solution: see git sql folder  
+Ongoing Pyspark Solution: see git pyspark.ipynb file 
 
 ## 5. Data Visualization and Interpretation 
 See Tableau<br> 
 
 ## 6.Further Development 
-Big Data Solution: Spark<br>
+Big Data Solution: More efficient Spark<br>
 ML Modeling: Recomendation System <br>
 ML Visualizationa and Interpretation: shap value for explainable AI <br>
