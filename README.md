@@ -21,7 +21,7 @@ Goal for the platform app: 1. Incresing profit/sales. 2.Improving the amount of 
 How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product stragy making.<br> 
 (real scenario: gathering reuiqrements: from operation deparment - user centerted, or product deparment - product centerted) <br>
 
-![mindnode](img/Analysis_Mindmap.jpg)
+![mindmap](img/Analysis_Mindmap.jpg)
 
 User Conversion: improve conversion rate <br>
 User Habit: target active users <br>
