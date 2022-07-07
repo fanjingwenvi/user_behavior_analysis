@@ -21,7 +21,7 @@ Goal for the platform app: 1. Incresing profit/sales. 2.Improving the amount of 
 How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product stragy making.<br> 
 (real scenario: gathering reuiqrements: from operation deparment - user centerted, or product deparment - product centerted) <br>
 
-![mindmap](img/Analysis_Mindmap.jpg)
+![Mindmap](img/Analysis_Mindmap.jpg)
 
 User Conversion: improve conversion rate <br>
 User Habit: target active users <br>
@@ -42,7 +42,7 @@ Mysql Solution: see git sql folder
 Ongoing Pyspark Solution: see git pyspark.ipynb file 
 
 ## 5. Data Visualization and Interpretation 
-See Tableau<br> 
+![Dashboard](img/Dashboard.png)<br> 
 
 ## 6.Further Development 
 Big Data Solution: More efficient Spark<br>
