@@ -23,28 +23,29 @@ How: Ceate KPIs and compare to the base line, find hidden information from buyer
 
 ![Mindmap](img/Analysis_Mindmap.jpg)
 
-User Conversion: improve conversion rate <br>
-User Habit: target active users <br>
-User Value: different strategies for different users <br>
-User Preference: include the seller users <br>
-
 ## 2.Data Collection 
-There are different approaches. 
+There are several different approaches to handle the original data: 
 Data Form: CSV File - SQL Database - pandas DataFram - Spark DataFrame<br>
-Related Field: Data Integration: ETL extract, transform and load.Big Data: batach processing, configuration.<br>
+Reference: Data Integration: ETL extract, transform and load. Big Data: batach processing, configuration.<br>
 
 ## 3. Data Cleaninging 
-field/column: column name, datatype<br> 
-value: null, repeated, anomoly(constrain)<br> 
+Column: column name, datatype<br> 
+Value: null, repeated, anomoly(constrain)<br> 
 
 ## 4. Data Analysis 
+Pyspark Solution: see git pyspark.ipynb file 
 Mysql Solution: see git sql folder  
-Ongoing Pyspark Solution: see git pyspark.ipynb file 
 
 ## 5. Data Visualization and Interpretation 
+Tableau Solution<br> 
 ![Dashboard](img/Dashboard.png)<br> 
+<br> 
+Interpretation: <br> 
+User Conversion: Although the traffic conversion rate is low, the customer conversion rate is not. This means customers are comparing different items through the plafdorm. Big e-commerce platform can have low traffice conversion rate as the norm. The conversion rates should be compared to the similar platform instead of the indutry average. <br>
+User Habit: There is a jump of clicks, sales and platform users on 2017-12-01.This maybe be due to the sales promotion. The click reaches the peak at 21:00 of the day. However, the amount of sales and users are relatively staeady after 10:00 . And 18:00 is the lowerst point of sales after 10:00 and the common time for dinner in China. This information can be provide to the sellers to plan for customer service. <br>
+User Value: RFM model... <br>
+User Preference: long tail effect... <br>
 
 ## 6.Further Development 
-Big Data Solution: More efficient Spark<br>
 ML Modeling: Recomendation System <br>
 ML Visualizationa and Interpretation: shap value for explainable AI <br>
