@@ -18,10 +18,10 @@ category_id: 9,439<br>
 ## 1.Business Analysis
 
 Goal for the platform app: 1. Incresing profit/sales. 2.Improving the amount of buyer and seller <br>
-How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product stragy making.<br> 
+How: Ceate KPIs and compare to the base line, find hidden information from buyer user, to support operation and product strategy making.<br> 
 (real scenario: gathering reuiqrements: from operation deparment - user centerted, or product deparment - product centerted) <br>
 
-![Mindmap](img/Analysis_Mindmap.jpg)
+![Mindmap](img/Analysis_Mindmap.png)
 
 ## 2.Data Collection 
 There are several different approaches to handle the original data: 
@@ -38,11 +38,11 @@ Mysql Solution: see git sql folder
 
 ## 5. Data Visualization and Interpretation 
 Tableau Solution<br> 
-![Dashboard](img/Dashboard.png)<br> 
+![Dashboard](img/Dashboard.jpg)<br> 
 <br> 
 Interpretation: <br> 
-User Conversion: Although the traffic conversion rate is low, the customer conversion rate is not. This means customers are comparing different items through the plafdorm. Big e-commerce platform can have low traffice conversion rate as the norm. The conversion rates should be compared to the similar platform instead of the indutry average. <br>
-User Habit: There is a jump of clicks, sales and platform users on 2017-12-01.This maybe be due to the sales promotion. The click reaches the peak at 21:00 of the day. However, the amount of sales and users are relatively staeady after 10:00 . And 18:00 is the lowerst point of sales after 10:00 and the common time for dinner in China. This information can be provide to the sellers to plan for customer service. <br>
+User Conversion: Although the traffic conversion rate is low, the customer conversion rate is not. This means customers are comparing different items through the platform. Big e-commerce platform can have low traffic conversion rate as the norm. The conversion rates should be compared to the similar platform instead of the industry average. <br>
+User Habit: There is a jump of clicks, sales and platform users on 2017-12-01.This may be due to the sales promotion. The click reaches the peak at 21:00 of the day. However, the amount of sales and users are relatively staeady after 10:00 . And 18:00 is the lowerst point of sales after 10:00 and the common time for dinner in China. This information can be provided to the seller users for their customer service planning. <br>
 User Value: RFM model... <br>
 User Preference: long tail effect... <br>
 
